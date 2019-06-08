@@ -1,0 +1,78 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int findMin(int *g, int *dp, int *vis, int r, int c, int x, int y)
+{
+
+    int up = 1e9, down = 1e9, left = 1e9, right = 1e9;
+
+    if(*((vis+x*c)+y))
+        return *((dp+x*c)+y);
+
+    if(x == 0 || y == 0 || x == (r-1) || y == (c-1))
+        {
+            *((dp+x*c)+y) = 0;
+            return 0;
+        }
+
+    *((vis+x*c)+y) = 1;
+
+    if(*((g+(x-1)*c)+y) == 0 && (x-1) >-1)
+        if (!(*((vis+(x-1)*c)+y)))
+            {
+                //cout<<"UP "<<x<<" "<<y<<"\n";
+                up = findMin((int *)g, (int *)dp, (int *)vis, r, c, x-1, y);
+            }
+    if(*((g+(x+1)*c)+y) ==0 && (x+1) <r)
+        if (!(*((vis+(x+1)*c)+y)))
+            {
+                //cout<<"Down "<<x<<" "<<y<<"\n";
+                down = findMin((int *)g, (int *)dp, (int *)vis, r, c, x+1, y);
+            }
+    if(*((g+(x)*c)+y-1) ==0 && (y-1) >-1)
+        if (!(*((vis+(x)*c)+y-1)))
+            {
+                //cout<<"LEFT "<<x<<" "<<y<<"\n";
+                left = findMin((int *)g, (int *)dp, (int *)vis, r, c, x, y-1);
+            }
+    if(*((g+(x)*c)+y+1) ==0 && (y+1) <c)
+        if (!(*((vis+(x)*c)+y+1)))
+            {
+                //cout<<"RIGHT "<<x<<" "<<y<<"\n";
+                right = findMin((int *)g, (int *)dp, (int *)vis, r, c, x, y+1);
+            }
+    *((dp+x*c)+y) = 1 + min(up, min(down, min(left, right)));
+
+    return *((dp+x*c)+y);
+}
+
+int main()
+{
+    int r, c, i, j;
+    cout<<"Enter length of rows and columns: ";
+    cin>>r>>c;
+
+    int vis[r][c] = {0};
+    int dp[r][c];
+    for(i=0;i<r;i++)
+        for(j=0;j<c;j++)
+            dp[i][j] = -1;
+
+    int g[r][c];
+    int x,y;
+    cout<<"Enter "<<r*c<<" elements:\n";
+    for(i=0;i<r;i++)
+        for(j=0;j<c;j++)
+            {
+                cin>>g[i][j];
+                if(g[i][j] == 2)
+                    x=i,y=j;
+            }
+
+    int res = findMin((int *)g, (int *)dp, (int *)vis, r, c, x, y);
+    if(res >= 1e9)
+        cout<<-1;
+    else
+        cout<<"\nMinimum Length:  "<< res;
+    return 0;
+}
