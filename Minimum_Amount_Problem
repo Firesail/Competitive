@@ -1,0 +1,39 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+   long long sum, i,j,k, cnt1, cnt2, cnt3, cost1, cost2, cost3, x, min = 1e9;
+   long long a,b,c;
+   cin>>sum;
+   cin>>cnt1>>cnt2>>cnt3;
+   cin>>cost1>>cost2>>cost3;
+
+   for(i=0;i<=cnt1;i++)
+        for(j=0;j<=cnt2;j++)
+            {
+                x = (sum - 2*i - 3*j);
+
+                if(x%5!=0)
+                    continue;
+                else
+                    k = x/5;
+
+                if(k<=cnt3)
+                    {
+                        x = cost1*i + cost2*j + cost3*k;
+                        if(x < min)
+                            {min = x;
+                            a=i;
+                            b=j;
+                            c=k;
+                            }
+                    }
+            }
+
+   if(min>=1e9)
+        cout<<-1;
+   else
+        cout<<min;
+   return 0;
+}
