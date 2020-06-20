@@ -1,0 +1,147 @@
+#include<iostream> 
+#include <list> 
+  
+using namespace std; 
+  
+// This class represents a directed graph using 
+// adjacency list representation 
+class Graph 
+{ 
+    int V;    // No. of vertices 
+  
+    // Pointer to an array containing adjacency 
+    // lists 
+    list<int> *adj;    
+public: 
+    Graph(int V);  // Constructor 
+  
+    // function to add an edge to graph 
+    void addEdge(int v, int w);  
+  
+    // prints BFS traversal from a given source s 
+    int BFS(int s, int e);   
+}; 
+  
+Graph::Graph(int V) 
+{ 
+    this->V = V; 
+    adj = new list<int>[V]; 
+} 
+  
+void Graph::addEdge(int v, int w) 
+{ 
+    adj[v].push_back(w); // Add w to v’s list. 
+} 
+  
+int Graph::BFS(int s, int e) 
+{ 
+    // Mark all the vertices as not visited 
+    bool *visited = new bool[V]; 
+    for(int i = 0; i < V; i++) 
+        visited[i] = false; 
+  
+    // Create a queue for BFS 
+    list<int> queue; 
+  
+    // Mark the current node as visited and enqueue it 
+    visited[s] = true; 
+    queue.push_back(s); 
+  
+    // 'i' will be used to get all adjacent 
+    // vertices of a vertex 
+    list<int>::iterator i; 
+  
+    while(!queue.empty()) 
+    { 
+        // Dequeue a vertex from queue and print it 
+        s = queue.front(); 
+        //cout << s << " "; 
+        queue.pop_front(); 
+  
+        // Get all adjacent vertices of the dequeued 
+        // vertex s. If a adjacent has not been visited,  
+        // then mark it visited and enqueue it 
+        for (i = adj[s].begin(); i != adj[s].end(); ++i) 
+        { 
+            if (!visited[*i]) 
+            { 
+                visited[*i] = true;
+                
+                if(*i == e)
+                    return 1;
+                queue.push_back(*i); 
+            } 
+        } 
+    } 
+    
+    return 0;
+} 
+
+
+
+
+int main() {
+    int n;
+    cin >> n;
+    
+    Graph g(n);
+    
+    int arr[n];                                     // Reading input from STDIN
+    for(int i=0; i<n; i++){
+        cin>>arr[i];
+    }
+    int brr[n][n];
+    int e;
+    cin>>e;
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n;j++){
+            brr[i][j]=0;                
+        }
+    }
+    for(int i=0;i<e;i++){
+        int a,b;
+        cin>>a>>b;
+        for(int j=0;j<n;j++){
+            if(a==arr[j]){
+                a=j;
+                break;
+            }
+        }
+        for(int j=0;j<n;j++){
+            if(b==arr[j]){
+                b=j;
+                break;
+            }
+        }
+        
+        g.addEdge(a, b);
+        
+        brr[a][b] = 1;
+    }
+    // for(int i=0;i<n;i++){
+    //     for(int j=0;j<n;j++){
+    //         cout<<brr[i][j]<<" ";               
+    //     }
+    //     cout<<endl;
+    // }
+
+    int x,y;
+    cin>>x>>y;
+    for(int j=0;j<n;j++){
+        if(x==arr[j]){
+            x=j;
+            break;
+        }
+    }
+    for(int j=0;j<n;j++){
+        if(y==arr[j]){
+            y=j;
+            break;
+        }
+    }
+
+    // cout<<x<<y<<"\n\n";
+    
+    cout<<g.BFS(x,y);
+    
+}
