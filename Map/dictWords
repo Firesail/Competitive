@@ -1,0 +1,65 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+
+vector<string> dictWords(string textInput){
+    vector<string> answer;
+    
+    string str = textInput;
+    
+    map<string, int> M;
+ 
+    string word = "";
+ 
+    for (int i = 0; i < str.size(); i++) {
+ 
+        if (str[i] == ' ') {
+ 
+            if (M.find(word) == M.end()) {
+                M.insert(make_pair(word, 1));
+                word = "";
+            }
+ 
+            else {
+                M[word]++;
+                word = "";
+            }
+        }
+ 
+        else
+            word += str[i];
+    }
+ 
+    if (M.find(word) == M.end())
+        M.insert(make_pair(word, 1));
+ 
+    else
+        M[word]++;
+ 
+    for (auto& it : M) {
+
+        if(it.second > 1)
+            answer.push_back(it.first);
+    }
+
+    
+    return answer;
+} 
+
+
+
+int main()
+{
+    string line = "cat batman latt matter cat matter cat";
+      
+    
+    vector<string> res = dictWords(line);
+    
+        // Printing the token vector
+    for(int i = 0; i < res.size(); i++)
+        cout << res[i] << " ";
+    
+   
+   return 0;
+}
