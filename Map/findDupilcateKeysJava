@@ -1,0 +1,42 @@
+import java.util.*;
+
+public class Main
+{
+    
+    public static List<String> findDupilcateKeys(Map<String, String> map){
+
+        List<String> res = new ArrayList<>();
+        Map<String, List<String>> freq = new HashMap<String, List<String>>();
+
+
+        for (Map.Entry<String,String> entry : map.entrySet()) {
+             String newKey = entry.getValue();
+    
+             List<String> newValue = new ArrayList<>();
+             if(freq.containsKey(newKey)) {
+                 newValue = freq.get(newKey);
+             }
+             
+             newValue.add(entry.getKey());
+             freq.put(newKey, newValue);
+        }
+
+        for (Map.Entry<String, List<String>> entry : freq.entrySet()) {
+            if(entry.getValue().size() > 1)
+                res.addAll(entry.getValue());
+        }
+        return res;
+    }
+    
+	public static void main(String[] args) {
+		Map<String, String> map = new HashMap<String, String>();
+        map.put("key1", "abc");
+        map.put("key2", "wer");
+        map.put("key3", "sdf");
+        map.put("key4", "oiu");
+        map.put("key5", "cde");
+        map.put("key6", "wer");
+        
+        System.out.println(findDupilcateKeys(map));
+	}
+}
